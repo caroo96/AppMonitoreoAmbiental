@@ -1,14 +1,73 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./src/screens/LoginScreen";
+import Home from "./src/screens/Home";
 import Settings from "./src/screens/Settings";
+import {BackHandler} from "react-native"; // Para cerrar la aplicación
+import Icon from "react-native-vector-icons/Ionicons";
+
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function BottomTabNavigator() {
+  React.useEffect(() =>{
+    const backAction = () =>{
+      // cierra la aplicacion en vez de volver al login
+    BackHandler.exitApp();
+    return true;
+  };
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
+    return () => {
+      if (backHandler && backHandler.remove) {
+        backHandler.remove();
+      }
+    };
+  }, []);
+  return (
+    <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = 'home';
+        } else if (route.name === 'Settings') {
+          iconName = 'settings';
+        }
+
+        return <Icon name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#007AFF',
+      tabBarInactiveTintColor: 'gray',
+    })}>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Settings" component={Settings} />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      {/* 👇 Cambia el componente que quieras mostrar */}
-      <LoginScreen />
-      {/* <Settings /> */}
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator 
+      initialRouteName="LoginScreen"
+      screenOptions={{ 
+        headerLeft: null, // deshabilita el boton devolver//
+        gestureEnabled: false, // deshabilita el gesto para devolver//
+        }}>
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen 
+        name="Main" 
+        component={BottomTabNavigator} 
+        options={{
+           headerShown: false,
+           headerLeft: null, //Sin botón de devolver
+           gestureEnabled: false, //Sin gesto de devolver
+           }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

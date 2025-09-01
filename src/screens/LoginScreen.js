@@ -9,8 +9,10 @@ export default function LoginScreen({ navigation }) {
   const handleLogin = () => {
     // luego conectaremos con authService
     if (email === "admin" && password === "1234") {
-      navigation.navigate("Settings");
+      console.log("Ingreso exitoso, navegando a Main")
+      navigation.navigate("Main");
     } else {
+      console.log("Credenciales incorrectas")
       alert("Credenciales incorrectas");
     }
   };
@@ -34,7 +36,10 @@ export default function LoginScreen({ navigation }) {
         style={styles.input}
       />
 
-      <Button title="Ingresar" onPress={handleLogin} />
+      <Button
+        title="Ingresar"
+        onPress={handleLogin}
+      />
     </View>
   );
 }
