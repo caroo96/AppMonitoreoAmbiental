@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./src/screens/LoginScreen";
+import Registro from "./src/screens/Registro";
 import Home from "./src/screens/Home";
 import Settings from "./src/screens/Settings";
 import {BackHandler} from "react-native"; // Para cerrar la aplicación
@@ -59,6 +60,7 @@ export default function App() {
         gestureEnabled: false, // deshabilita el gesto para devolver//
         }}>
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="Registro" component={Registro} />
         <Stack.Screen 
         name="Main" 
         component={BottomTabNavigator} 
