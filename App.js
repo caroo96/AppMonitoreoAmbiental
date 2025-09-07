@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./src/screens/LoginScreen";
 import Registro from "./src/screens/Registro";
 import Home from "./src/screens/Home";
+import Observaciones from "./src/screens/Observaciones";
 import Settings from "./src/screens/Settings";
 import {BackHandler} from "react-native"; // Para cerrar la aplicación
 import Icon from "react-native-vector-icons/Ionicons";
@@ -34,10 +35,12 @@ function BottomTabNavigator() {
         let iconName;
 
         if (route.name === 'Home') {
-          iconName = 'home';
-        } else if (route.name === 'Settings') {
-          iconName = 'settings';
-        }
+        iconName = 'home';
+      } else if (route.name === 'Observaciones') {
+        iconName = 'create'; // ícono de escribir
+      } else if (route.name === 'Settings') {
+        iconName = 'settings';
+      }
 
         return <Icon name={iconName} size={size} color={color} />;
       },
@@ -45,6 +48,7 @@ function BottomTabNavigator() {
       tabBarInactiveTintColor: 'gray',
     })}>
       <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Observaciones" component={Observaciones} />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
