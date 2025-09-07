@@ -1,21 +1,36 @@
 // src/screens/LoginScreen.js
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "react-native";
+//imports para firebase
+import { auth } from '../../firebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // luego conectaremos con authService
-    if (email === "admin" && password === "1234") {
-      console.log("Ingreso exitoso, navegando a Main")
-      navigation.navigate("Main");
-    } else {
-      console.log("Credenciales incorrectas")
-      alert("Credenciales incorrectas");
-    }
-  };
+  if (!email || !password) {
+    alert("Por favor completa todos los campos");
+    return;
+  }
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log("Ingreso exitoso ✅", userCredential.user);
+      navigation.navigate("Main"); // envía al TabNavigator
+    })
+    .catch((error) => {
+      console.log("Error de login ❌", error.message);
+      let errorMessage = "Error al iniciar sesión";
+      if (error.code === 'auth/invalid-credential') errorMessage = "Correo o contraseña incorrectos";
+      if (error.code === 'auth/user-not-found') errorMessage = "El usuario no existe";
+      if (error.code === 'auth/wrong-password') errorMessage = "Contraseña incorrecta";
+      alert(errorMessage);
+    });
+};
+
 
   return (
     <View style={styles.container}>

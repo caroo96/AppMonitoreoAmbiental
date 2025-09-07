@@ -1,6 +1,10 @@
 // src/screens/Registro.js
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from "react-native";
+import { auth } from '../../firebaseConfig';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+
 
 export default function Registro({ navigation }) {
   const [email, setEmail] = useState("");
@@ -31,19 +35,26 @@ export default function Registro({ navigation }) {
       return;
     }
 
-    // Aquí se conectaría con el servicio de autenticación
-    console.log("Registro exitoso:", { email, password });
-    Alert.alert(
-      "Registro exitoso", 
-      "Tu cuenta ha sido creada correctamente",
-      [
-        {
-          text: "OK",
-          onPress: () => navigation.navigate("LoginScreen")
-        }
-      ]
-    );
-  };
+    // Conexión con Firebase para crear el usuario
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      Alert.alert(
+        "Registro exitoso",
+        "Tu cuenta ha sido creada correctamente",
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("LoginScreen"),
+          },
+        ]
+      );
+    })
+    .catch((error) => {
+      let errorMessage = "Ocurrió un error al registrar";
+      if (error.code === 'auth/email-already-in-use') errorMessage = "El correo ya está registrado";
+      Alert.alert("Error", errorMessage);
+    });
+};
 
   return (
     <View style={styles.container}>
