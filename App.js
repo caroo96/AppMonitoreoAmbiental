@@ -11,6 +11,7 @@ import ConsultarObservaciones from "./src/screens/ConsultarObservaciones";
 import Settings from "./src/screens/Settings";
 import {BackHandler} from "react-native"; // Para cerrar la aplicación
 import Icon from "react-native-vector-icons/Ionicons";
+import { AuthProvider } from "./src/context/AuthContext";
 
 
 const Stack = createNativeStackNavigator();
