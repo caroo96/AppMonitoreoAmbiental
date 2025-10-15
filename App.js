@@ -5,7 +5,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LoginScreen from "./src/screens/LoginScreen";
 import Registro from "./src/screens/Registro";
 import Home from "./src/screens/Home";
-import Observaciones from "./src/screens/Observaciones";
+import ObservacionesMenu from "./src/screens/ObservacionesMenu";
+import RegistrarObservacion from "./src/screens/RegistrarObservacion";
+import ConsultarObservaciones from "./src/screens/ConsultarObservaciones";
 import Settings from "./src/screens/Settings";
 import {BackHandler} from "react-native"; // Para cerrar la aplicación
 import Icon from "react-native-vector-icons/Ionicons";
@@ -13,6 +15,31 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function ObservacionesStack() {
+  const InnerStack = createNativeStackNavigator();
+
+  return (
+    <InnerStack.Navigator>
+      <InnerStack.Screen
+        name="ObservacionesMenu"
+        component={ObservacionesMenu}
+        options={{ title: "Observaciones" }}
+      />
+      <InnerStack.Screen
+        name="RegistrarObservacion"
+        component={RegistrarObservacion}
+        options={{ title: "Registrar Observación" }}
+      />
+      <InnerStack.Screen
+        name="ConsultarObservaciones"
+        component={ConsultarObservaciones}
+        options={{ title: "Consultar Observaciones" }}
+      />
+    </InnerStack.Navigator>
+  );
+}
+
 
 function BottomTabNavigator() {
   React.useEffect(() =>{
@@ -36,7 +63,7 @@ function BottomTabNavigator() {
 
         if (route.name === 'Home') {
         iconName = 'home';
-      } else if (route.name === 'Observaciones') {
+      } else if (route.name === 'ObservacionesMenu') {
         iconName = 'create'; // ícono de escribir
       } else if (route.name === 'Settings') {
         iconName = 'settings';
@@ -48,7 +75,7 @@ function BottomTabNavigator() {
       tabBarInactiveTintColor: 'gray',
     })}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Observaciones" component={Observaciones} />
+      <Tab.Screen name="Observaciones" component={ObservacionesStack} options={{ headerShown: false }}/>
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
